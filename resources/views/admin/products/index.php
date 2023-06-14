@@ -9,6 +9,7 @@
   <body>
     <div class="container">
         <h2 class="mb-4 fs-3"><?php echo $title ?> </h2>
+        <a href="<?= route('products.create') ?>" class="btn btn-sm btn-primary">+ Create Product</a>
         <table class="table">
             <thead>
                 <tr>
