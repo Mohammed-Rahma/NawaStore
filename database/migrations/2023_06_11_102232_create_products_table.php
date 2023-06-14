@@ -25,7 +25,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->text('short_description')->nullable();
             $table->float('compare_price')->nullable();
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->enum('status' , ['draft' , 'active' , 'archived'])->default('active');
             $table->timestamps();
         });
