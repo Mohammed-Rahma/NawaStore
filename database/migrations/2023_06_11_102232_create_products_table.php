@@ -18,7 +18,7 @@ return new class extends Migration
            
             // $table->foreign('category_id')->references('id')->on('categories');
             $table->foreignId('category_id')->nullable()
-                  ->constrained('catrgories','id')
+                  ->constrained('categories','id')
                   ->nullOnDelete();
 
             // $table->unsignedBigInteger('category_id');

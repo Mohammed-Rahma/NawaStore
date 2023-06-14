@@ -17,7 +17,7 @@ class CategorySeeder extends Seeder
         //الكود المسؤل على اظافة البيانات داخل جدول الكاتيقوري 
 
         for ($i=0; $i <=10; $i++) { 
-            DB::table('catrgories')->insert([
+            DB::table('categories')->insert([
                 'name'=>'category'.$i,
                 'created_at'=>now()
             ]);

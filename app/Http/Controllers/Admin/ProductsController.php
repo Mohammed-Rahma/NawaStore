@@ -14,10 +14,10 @@ class ProductsController extends Controller
     public function index()
     {
         $products= DB::table('products')->
-        join('catrgories' , 'catrgories.id' , '=' , 'products.category_id')
+        join('categories' , 'categories.id' , '=' , 'products.category_id')
         ->select([
             'products.*',
-            'catrgories.name as category_name'
+            'categories.name as category_name'
         ])-> get(); //collection object = array 
         
         return view('admin.products.index',[
