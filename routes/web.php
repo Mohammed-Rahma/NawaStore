@@ -21,4 +21,4 @@ Route::get('/', function () {
 });
 
 Route::resource('/admin/categories' , CategoriesController::class );
- Route::resource('/admin/products' , ProductsController::class );
+Route::resource('/admin/products' , ProductsController::class );

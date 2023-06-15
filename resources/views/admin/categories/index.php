@@ -9,7 +9,7 @@
   <body>
     <div class="container">
         <h2 class="mb-4 fs-3"><?php echo $title ?> </h2>
-        <a href="<?= route('category.create') ?>" class="btn btn-sm btn-primary">+ Create Categories</a>
+        <a href="<?= route('categories.create') ?>" class="btn btn-sm btn-primary">+ Create Categories</a>
         <table class="table">
             <thead>
                 <tr>
