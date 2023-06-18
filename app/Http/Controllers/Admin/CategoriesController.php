@@ -58,7 +58,10 @@ class CategoriesController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $category = Category::findOrfial($id);
+        return view('admin.categories.edit' , [
+            'category'=>$category
+        ]);
     }
 
     /**
@@ -66,7 +69,11 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $category = Category::findOrfial($id);
+        $category->name = $request->input('name'); 
+        $category->save();
+        //prg: post redirect get 
+        return redirect(route('categories.index')); 
     }
 
     /**
@@ -74,6 +81,7 @@ class CategoriesController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Category::destroy($id);
+        return redirect(route('categories.index'));
     }
 }

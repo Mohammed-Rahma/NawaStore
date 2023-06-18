@@ -79,7 +79,16 @@ class ProductsController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        // 1) $product = Product::where('id' , '=' , $id)->first();
+        // 2) $product = Product::find($id);
+        // 3) if(!$product){
+        //     abort(404);
+        // }
+        $product = Product::findOrfail($id); 
+
+        return view('admin.products.edit' , [
+            'product'=>$product
+        ]);
     }
 
     /**
@@ -87,7 +96,14 @@ class ProductsController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $product = Product::findOrfail($id); 
+        $product->name = $request->input('name'); 
+        $product->slug = $request->input('slug'); 
+        $product->description = $request->input('description'); 
+        $product->short_description = $request->input('short_description'); 
+        $product->compare_price = $request->input('compare_price'); 
+        $product->save();
+        return redirect()->route('products.index'); 
     }
 
     /**
@@ -95,6 +111,10 @@ class ProductsController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Product::destroy($id);
+        // Product::where('id' , '=' , $id)->delete();
+        // $product = Product::findOrfail($id); 
+        // $product->delete();
+        return redirect()->route('products.index'); 
     }
 }
