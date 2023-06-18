@@ -47,7 +47,11 @@ class ProductsController extends Controller
      */
     public function create()
     {
-        return view('admin.products.create');
+        $categories = Category::all();
+        return view('admin.products.create' , [
+            'products'=> new Product(),
+            'categories'=>$categories
+        ]);
     }
 
     /**
@@ -58,12 +62,13 @@ class ProductsController extends Controller
         $product = new Product();
         $product->name = $request->input('name'); 
         $product->slug = $request->input('slug'); 
+        $product->category_id = $request->input('category_id'); 
         $product->description = $request->input('description'); 
         $product->short_description = $request->input('short_description'); 
         $product->compare_price = $request->input('compare_price'); 
         $product->save();
         //prg: post redirect get 
-        return redirect(route('products.index')); // -> get request 
+        return redirect(route('products.index') , with('success' , "Product {$product->name} created")); // -> get request 
     }
 
     /**
@@ -85,9 +90,12 @@ class ProductsController extends Controller
         //     abort(404);
         // }
         $product = Product::findOrfail($id); 
+        $categories = Category::all();
 
         return view('admin.products.edit' , [
-            'product'=>$product
+            'product'=>$product,
+            'categories'=>$categories
+
         ]);
     }
 
@@ -99,11 +107,12 @@ class ProductsController extends Controller
         $product = Product::findOrfail($id); 
         $product->name = $request->input('name'); 
         $product->slug = $request->input('slug'); 
+        $product->category_id = $request->input('category_id'); 
         $product->description = $request->input('description'); 
         $product->short_description = $request->input('short_description'); 
         $product->compare_price = $request->input('compare_price'); 
         $product->save();
-        return redirect()->route('products.index'); 
+        return redirect()->route('products.index')-> with('success' , "Product {$product->name} updated"); 
     }
 
     /**
@@ -111,10 +120,10 @@ class ProductsController extends Controller
      */
     public function destroy(string $id)
     {
-        Product::destroy($id);
+        // Product::destroy($id);
         // Product::where('id' , '=' , $id)->delete();
-        // $product = Product::findOrfail($id); 
-        // $product->delete();
-        return redirect()->route('products.index'); 
+        $product = Product::findOrfail($id); 
+        $product->delete();
+        return redirect()->route('products.index')-> with('success' , "Product {$product->name} deleted"); 
     }
 }

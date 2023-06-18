@@ -3,6 +3,12 @@
 @section('content')
 <h2 class="mb-4 fs-3">{{$title}} </h2>
 <a href="{{route('products.create')}}" class="btn btn-sm btn-primary">+ Create Product</a>
+@if(session()->has('success'))
+<div class="alter alter-success">
+{{session('success')}}
+</div>
+@endif
+
 <table class="table">
     <thead>
         <tr>
@@ -39,4 +45,12 @@
         <?php endforeach ?>
     </tbody>
 </table>
+
+<!-- <script>
+    setTimeout(function(){
+        {{session('success')}}
+        // alert("رسالتك هنا");
+    }, 5000);
+</script> -->
+
 @endsection
