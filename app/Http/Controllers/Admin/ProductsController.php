@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ProductsController extends Controller
 {
@@ -87,7 +88,13 @@ class ProductsController extends Controller
         //prg: post redirect get 
 
         //mass assignment
-        $product = Product::create($request->validated());
+        $data=$request->validated();
+        if($request->hasFile('image')){
+           $file = $request->file('image');
+            $path = $file->store('uploads/images' , 'public');
+            $data['image']=$path;
+        }
+        $product = Product::create($data);
         return redirect(route('products.index'))->with('success' , "Product {$product->name} created"); // -> get request 
     }
 
@@ -153,7 +160,17 @@ class ProductsController extends Controller
         // $product->save();
 
         // $product = Product::findOrfail($id); 
-        $product->update($request->validated());
+        $data = $request->validated();
+        if($request->hasFile('image')){
+            $file = $request->file('image');
+            $path = $file->store('uploads/images','public');
+            $data['image'] = $path;
+        }
+        $old_image = $product->image;
+        $product->update($data);
+
+        if($old_image && $old_image != $product->image ){Storage::disk('public')->delete($old_image);}
+ 
         return redirect()->route('products.index')-> with('success' , "Product {$product->name} updated"); 
     }
 
@@ -167,7 +184,11 @@ class ProductsController extends Controller
 
         // $product = Product::findOrfail($id); 
         
+
+        // $product = Product::findOrFail($id);
         $product->delete();
+        if($product->image){ Storage::disk('public')->delete($product->image);}
+
         return redirect()->route('products.index')-> with('success' , "Product {$product->name} deleted"); 
     }
 }

@@ -19,6 +19,7 @@
             <th>Status</th>
             <th></th>
             <th></th>
+            <th>Image</th>
         </tr>
     </thead>
     <tbody>
@@ -40,6 +41,18 @@
                         @method('delete')
                         <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i> Delete</button>
                     </form>
+                </td>
+
+                <td>
+                    @if($product->image)
+                    <a href="{{asset('storage/'. $product->image)}}" target="_blank">
+
+                    <!-- <img src="{{asset('storage/'. $product->image)}}" width="60" alt=""> الطريقة التانية -->
+                        <img src="{{ Storage::disk('public')->url($product->image)}}" width="60" alt="">
+                    </a>
+                    @else
+                    <img src="https://placehold.co/100x100" alt="">
+                    @endif
                 </td>
             </tr>
         <?php endforeach ?>
