@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+use NumberFormatter;
 
 class Product extends Model
 {
@@ -25,5 +27,21 @@ class Product extends Model
             self::STATUS_ARCHIVED => 'Archived',
 
         ];
+    }
+
+    public function getImageUrlAttribute(){
+        if($this->image){
+            return Storage::disk('public')->url($this->image);
+        }
+        return "https://placehold.co/100x100";
+    }
+
+    public function getNameAttribute($value){
+           return ucwords($value);
+    }
+    public function getPriceFormattedAttribute(){
+        // 'en' = config('app.local') يقرا الللغة حسب لغة الابلكيشن 
+          $formatter = new NumberFormatter('en' , NumberFormatter::CURRENCY);
+        return $formatter ->formatCurrency($this->price , 'USD');
     }
 }

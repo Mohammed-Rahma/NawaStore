@@ -99,17 +99,10 @@
 
 
         <div class="form-floating mb-3">
-            @if($product->image)
-            <a href="{{asset('storge/'. $product->image)}}" >
-                <img src="{{ Storage::disk('public')->url($product->image)}}" width="60" alt="">
-            </a>
-            @else
-            <img src="https://placehold.co/100x100" alt="">
-            @endif
+            <img src="{{$product->image_url}}" width="60" alt="">
             <label for="image">Image</label>
             <div>
-                <input type="file" class="form-control @error('image') is-invalid @enderror" 
-                id="image" name="image" placeholder="Product Image" value="{{ old('image', $product->image) }}">
+                <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image" placeholder="Product Image" value="{{ old('image', $product->image) }}">
                 @error('image')
                 <p class="text-danger">{{ $message }}</p>
                 @enderror
