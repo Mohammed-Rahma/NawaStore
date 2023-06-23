@@ -21,8 +21,6 @@
             <th>Name</th>
             <th>Restore</th>
             <th>Delete At</th>
-
-
         </tr>
     </thead>
     <tbody>
@@ -51,9 +49,6 @@
                         <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i> Force Delete</button>
                     </form>
                 </td>
-
-
-
             </tr>
         <?php endforeach ?>
     </tbody>
