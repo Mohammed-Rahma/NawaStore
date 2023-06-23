@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -30,7 +31,7 @@ class ProductsController extends Controller
         ->select([
             'products.*',
             'categories.name as category_name'
-        ])-> get(); // return collection of product model
+        ])->Paginate(5); // return collection of product model
         
         return view('admin.products.index',[
             'title'=>'Products List',
@@ -95,6 +96,16 @@ class ProductsController extends Controller
             $data['image']=$path;
         }
         $product = Product::create($data);
+
+        if($request->hasFile('gallery')){
+            foreach ($request->file('image') as $file){  //return  array of uploaded file 
+              ProductImage::create([
+                'product_id'=>$product->id,
+                'image'=> $file->store('uploads/images','public')
+              ]);
+            }
+
+        }
         return redirect(route('products.index'))->with('success' , "Product {$product->name} created"); // -> get request 
     }
 
@@ -120,12 +131,12 @@ class ProductsController extends Controller
         // $product = Product::findOrfail($id); 
 
         $categories = Category::all();
-
+        $gallery = ProductImage::where('product_id', '=' , $product->id)->get();
         return view('admin.products.edit' , [
             'product'=>$product,
             'categories'=>$categories,
             'status_options'=>Product::statusOptions(),
-
+            'gallery'=>$gallery,
         ]);
     }
 
@@ -162,7 +173,7 @@ class ProductsController extends Controller
         // $product = Product::findOrfail($id); 
         $data = $request->validated();
         if($request->hasFile('image')){
-            $file = $request->file('image');
+            $file = $request->file('image'); //return uploaded file object
             $path = $file->store('uploads/images','public');
             $data['image'] = $path;
         }
@@ -170,7 +181,17 @@ class ProductsController extends Controller
         $product->update($data);
 
         if($old_image && $old_image != $product->image ){Storage::disk('public')->delete($old_image);}
- 
+        
+        if($request->hasFile('gallery')){
+            foreach ($request->file('gallery') as $file){  //return  array of uploaded file 
+              ProductImage::create([
+                'product_id'=>$product->id,
+                'image'=> $file->store('uploads/images','public')
+              ]);
+            }
+
+        }
+
         return redirect()->route('products.index')-> with('success' , "Product {$product->name} updated"); 
     }
 
@@ -187,8 +208,33 @@ class ProductsController extends Controller
 
         // $product = Product::findOrFail($id);
         $product->delete();
-        if($product->image){ Storage::disk('public')->delete($product->image);}
 
         return redirect()->route('products.index')-> with('success' , "Product {$product->name} deleted"); 
     }
+
+    public function trashed(){
+
+        $products = Product::onlyTrashed()->paginate();
+        return view('admin.products.trashed' , [
+            'title'=> 'Trashed Products',
+            'products' => $products
+        ]);
+    }
+
+    public function restore($id){
+        $product = Product::onlyTrashed()->findOrFail($id);
+        $product->restore();
+        return redirect()->route('products.index')-> with('success' , "Product {$product->name} restore"); 
+    }
+    
+    public function forceDelete($id){
+        $product = Product::onlyTrashed()->findOrFail($id);
+        $product->forceDelete();
+
+        if($product->image){ Storage::disk('public')->delete($product->image);}
+
+        return redirect()->route('products.index')-> with('success' , "Product {$product->name} deleted forever!"); 
+    }
+
+
 }

@@ -1,8 +1,13 @@
 @extends('layouts.admin')
 
 @section('content')
-<h2 class="mb-4 fs-3">{{$title}} </h2>
-<a href="{{route('products.create')}}" class="btn btn-sm btn-primary">+ Create Product</a>
+<header class=" mb-4 d-flex">
+    <h2 class="mb-4 fs-3">{{$title}} </h2>
+    <div class="ml-auto">
+        <a href="{{route('products.create')}}" class="btn btn-sm btn-primary">+ Create Product</a>
+        <a href="{{route('products.trashed')}}" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i> View Trashed</a>
+    </div>
+</header>
 @if(session()->has('success'))
 <div class="alter alter-success">
     {{session('success')}}
@@ -68,6 +73,7 @@
         <?php endforeach ?>
     </tbody>
 </table>
+{{$products->links()}}
 
 <!-- <script>
     setTimeout(function(){

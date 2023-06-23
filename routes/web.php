@@ -19,6 +19,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-
+ 
+Route::get('/admin/products/trashed' , [ProductsController::class , 'trashed'])->name('products.trashed');
+Route::put('/admin/products/restor/{product}' , [ProductsController::class  , 'restore'])->name('products.restore');
+Route::delete('/admin/products/{product}/force' , [ProductsController::class , 'forceDelete'])->name('products.force-delete');
 Route::resource('/admin/categories' , CategoriesController::class );
 Route::resource('/admin/products' , ProductsController::class );

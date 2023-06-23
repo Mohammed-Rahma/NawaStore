@@ -36,6 +36,8 @@ class ProductRequest extends FormRequest
             'image' => 'nullable|image|dimensions:min_width=400,min_height=300,|max:500',   // 500KB  // 1024KB = 1MB
             // 'image' => 'file|mimetypes:image/png,image/jpg,image/jpeg,image/gif',   /// more secure than mimes and it used for imaes/files/videos
             'status'=>'required|in:active,draft,archived',
+            'gallery'=>'nullable|array',
+            'gallery.*'=>'image|dimensions:min_width=400,min_height=300,|max:500',
       ];
     }
     public function messages():array {
