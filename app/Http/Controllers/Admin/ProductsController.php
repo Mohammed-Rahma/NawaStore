@@ -31,8 +31,9 @@ class ProductsController extends Controller
         ->select([
             'products.*',
             'categories.name as category_name'
-        ])->Status('archived')->Paginate(5); // return collection of product model
+        ])->Paginate(5); // return collection of product model
         //  ->Active();
+        // ->Status('archived')
         return view('admin.products.index',[
             'title'=>'Products List',
             'products'=>$products

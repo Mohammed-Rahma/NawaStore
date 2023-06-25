@@ -46,6 +46,11 @@ class Product extends Model
           $formatter = new NumberFormatter('en' , NumberFormatter::CURRENCY);
         return $formatter ->formatCurrency($this->price , 'USD');
     }
+    public function getComparePriceFormattedAttribute(){
+        // 'en' = config('app.local') يقرا الللغة حسب لغة الابلكيشن 
+          $formatter = new NumberFormatter('en' , NumberFormatter::CURRENCY);
+        return $formatter ->formatCurrency($this->compare_price , 'USD');
+    }
 
     public static function booted(){
         static::addGlobalScope('owner' , function($query){
