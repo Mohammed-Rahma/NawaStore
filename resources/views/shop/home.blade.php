@@ -196,8 +196,9 @@
          </div>
      </section>
      <!-- End Features Area -->
+     
+    <x-trending-products title="New Arrivals" count="8"/>
 
-    <x-trending-products title= "New Arrivals" count="4"/>
 
      <!-- Start Banner Area -->
      <section class="banner section">

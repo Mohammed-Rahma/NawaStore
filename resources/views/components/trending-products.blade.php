@@ -14,7 +14,7 @@
             <div class="col-lg-3 col-md-6 col-12">
                 <!-- Start Single Product -->
 
-                <x-producrt-card :$product="$product"/>
+                <x-product-card :product="$product"/>
 
                 <!-- End Single Product -->
             </div>

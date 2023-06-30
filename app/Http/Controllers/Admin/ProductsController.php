@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -18,6 +19,7 @@ class ProductsController extends Controller
      */
     public function index()
     {
+       
         //using query builder 
         // $products= DB::table('products')->
         // join('categories' , 'categories.id' , '=' , 'products.category_id')

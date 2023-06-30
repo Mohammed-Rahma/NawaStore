@@ -16,9 +16,9 @@ class TrendingProducts extends Component
      */
     public function __construct($title, $count)
     {
-        $this->$title;
+        $this->title = $title;
         $this->products = Product::withoutGlobalScope('owner')
-            ->Active()
+            ->status('archived')
             ->latest('updated_at')
             ->take($count) // = limit(8)
             ->get();
