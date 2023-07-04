@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\CategoriesController;
 use App\Http\Controllers\Admin\ProductsController;
+use App\Http\Controllers\Admin\UsersController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,5 +23,6 @@ Route::middleware(['auth' , 'auth.type:admin,super-admin'])->prefix('/admin')->g
     Route::delete('/products/{product}/force' , [ProductsController::class , 'forceDelete'])->name('products.force-delete');
     Route::resource('/categories' , CategoriesController::class );
     Route::resource('/products' , ProductsController::class );
+    Route::resource('/users' , UsersController::class );
 
 });

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use NumberFormatter;
 
@@ -18,7 +19,7 @@ class Product extends Model
     const STATUS_ARCHIVED = 'archived';
 
     protected $fillable = [
-        'name', 'slug', 'category_id', 'description', 'short_description', 'price', 'compare_price', 'image', 'status'
+        'name', 'user_id', 'slug', 'category_id', 'description', 'short_description', 'price', 'compare_price', 'image', 'status'
     ];
 
     public static function statusOptions()
@@ -31,6 +32,14 @@ class Product extends Model
         ];
     }
 
+    public function category(){
+        return $this->belongsTo(Category::class , 'category_id')->withDefault([
+            'name'=>'Uncategories'
+        ]);
+    }
+
+
+    
     public function getImageUrlAttribute(){
         if($this->image){
             return Storage::disk('public')->url($this->image);
@@ -54,7 +63,7 @@ class Product extends Model
 
     public static function booted(){
         static::addGlobalScope('owner' , function($query){
-            $query->where('user_id' , '=' , 1);
+            $query->where('user_id' , '=' , Auth::user()->id);
         });
     } 
     public static function scopeActive(Builder $query){
@@ -63,4 +72,5 @@ class Product extends Model
     public static function scopeStatus(Builder $query , $status){
            $query->where('status' , '=' , $status);
     }
+    
 }

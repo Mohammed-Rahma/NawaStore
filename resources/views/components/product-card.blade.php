@@ -7,7 +7,12 @@
         </div>
     </div>
     <div class="product-info">
-        <span class="category">Speaker</span>
+        <span class="category">{{$product->category?->name}}</span>
+        <!--
+        $product->category?->nameلارفيل تلقائيا تسدعي الميثود كاتيقوري وترجعلي اوبجكت منها 
+        or 
+         $product->category()->first()->name 
+        -->
         <h4 class="title">
             <a href="{{route('shop.products.show' , $product->slug) }}"> {{$product->name}}</a>
         </h4>
@@ -20,7 +25,7 @@
             <li><span>5.0 Review(s)</span></li>
         </ul>
         <div class="price">
-            <span>{{$product->price_formatted}}</span>
+            {{$product->price_formatted}}
             @if($product->compare_price)
             <span class="discount-price">{{$product->compare_price}}</span>
             @endif

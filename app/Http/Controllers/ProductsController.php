@@ -13,9 +13,11 @@ class ProductsController extends Controller
     }
 
     public function show($slug){
-        $product = Product::activ()->withoutGlobalScope('owner')->where('slug', '=' , $slug)->firstOrfail($slug);
+        $product = Product::active()->withoutGlobalScope('owner')->where('slug', '=' , $slug)->firstOrfail($slug);
         $gallery = ProductImage::where('product_id', '=' , $product->id)->get();
 
         return view('shop.products.show' , ["product"=>$product , "gallery"=>$gallery]);
     }
+
+
 }

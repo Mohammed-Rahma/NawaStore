@@ -13,11 +13,12 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $categories = Category::
-        select([
-            'categories.*',
-        ])-> get(); // return collection of product model
+            // $categories = Category::
+        // select([
+        //     'categories.*',
+        // ])-> get(); // return collection of product model
        
+        $categories = Category::withCount('products')->paginate();
         return view('admin.categories.index' , [
             'title'=>'Categories List',
             'categories'=>$categories
@@ -39,10 +40,11 @@ class CategoriesController extends Controller
     public function store(Request $request)
     {
         $category = new Category();
-        $category->name = $request->input('name'); 
-        $category->save();
+        $category->name = $request->input('name'); //اسم العمود في الداتا بيز نفسسس اسم الحقل تاع الفورم 
+        $category->save(); //خزن في الداتا بيز 
         //prg: post redirect get 
-        return redirect(route('categories.index')); 
+        return redirect()->route('categories.index')->with('success' , "Category ({$category->name}) created");  
+        // redirect(route('categories.index'));
     }
 
     /**
@@ -58,8 +60,10 @@ class CategoriesController extends Controller
      */
     public function edit(string $id)
     {
-        $category = Category::findOrfial($id);
-        return view('admin.categories.edit' , [
+        $category = Category::findOrfail($id);
+        //if(!$category){abort(404);}  =  ::findOrfail($id);
+
+        return view('admin.categories.edit' ,[
             'category'=>$category
         ]);
     }
@@ -73,7 +77,7 @@ class CategoriesController extends Controller
         $category->name = $request->input('name'); 
         $category->save();
         //prg: post redirect get 
-        return redirect(route('categories.index')); 
+        return redirect()->route('categories.index')->with('success' , "Category ({$category->name}) updated"); 
     }
 
     /**
@@ -82,6 +86,6 @@ class CategoriesController extends Controller
     public function destroy(string $id)
     {
         Category::destroy($id);
-        return redirect(route('categories.index'));
+        return redirect()->route('categories.index');
     }
 }

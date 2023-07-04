@@ -4,8 +4,6 @@
     @csrf
 
     <h2 class="mb-4 fs-3">Create Product</h2>
-    @include('admin.products._form' , [
-        'submit_labal'=>'Create'
-        ])
+    @include('admin.products._form')
 </form>
 @endsection

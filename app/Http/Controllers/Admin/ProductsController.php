@@ -80,7 +80,7 @@ class ProductsController extends Controller
     //    ];
     //     $request->validate($rulls);
 
-        // $product = new Product();
+        // $product = new Product(); انشا مودل جديد للبرودكت 
         // $product->name = $request->input('name'); 
         // $product->slug = $request->input('slug'); 
         // $product->category_id = $request->input('category_id'); 
@@ -98,6 +98,7 @@ class ProductsController extends Controller
             $path = $file->store('uploads/images' , 'public');
             $data['image']=$path;
         }
+        $data['user_id']=Auth::id();
         $product = Product::create($data);
 
         if($request->hasFile('gallery')){
@@ -109,7 +110,7 @@ class ProductsController extends Controller
             }
 
         }
-        return redirect(route('products.index'))->with('success' , "Product {$product->name} created"); // -> get request 
+        return redirect(route('products.index'))->with('success' , "Product ({$product->name}) created"); // -> get request 
     }
 
     /**
@@ -127,11 +128,8 @@ class ProductsController extends Controller
     {
         // 1) $product = Product::where('id' , '=' , $id)->first();
         // 2) $product = Product::find($id);
-        // 3) if(!$product){
-        //     abort(404);
-        // }
-        
-        // $product = Product::findOrfail($id); 
+
+        // 3) if(!$product){abort(404);}   =  $product = Product::findOrfail($id); 
 
         $categories = Category::all();
         $gallery = ProductImage::where('product_id', '=' , $product->id)->get();
@@ -163,7 +161,7 @@ class ProductsController extends Controller
         //     $request->validate($rulls);
                
 
-        // $product = Product::findOrfail($id); 
+        // $product = Product::findOrfail($id); بتعامل مع نفس البرودكت الحالي 
         // $product->name = $request->input('name'); 
         // $product->slug = $request->input('slug'); 
         // $product->category_id = $request->input('category_id'); 
@@ -184,7 +182,8 @@ class ProductsController extends Controller
         $product->update($data);
 
         if($old_image && $old_image != $product->image ){Storage::disk('public')->delete($old_image);}
-        
+        $data['user_id'] = Auth::id();
+
         if($request->hasFile('gallery')){
             foreach ($request->file('gallery') as $file){  //return  array of uploaded file 
               ProductImage::create([
@@ -195,7 +194,7 @@ class ProductsController extends Controller
 
         }
 
-        return redirect()->route('products.index')-> with('success' , "Product {$product->name} updated"); 
+        return redirect()->route('products.index')-> with('success' , "Product ({$product->name}) updated"); 
     }
 
     /**
@@ -203,16 +202,13 @@ class ProductsController extends Controller
      */
     public function destroy(Product $product)
     {
-        // Product::destroy($id);
-        // Product::where('id' , '=' , $id)->delete();
+        // Product::destroy($id);  او  Product::where('id' , '=' , $id)->delete();
 
-        // $product = Product::findOrfail($id); 
-        
-
+        //Product::delete(); تحذف كل البيانات 
         // $product = Product::findOrFail($id);
         $product->delete();
 
-        return redirect()->route('products.index')-> with('success' , "Product {$product->name} deleted"); 
+        return redirect()->route('products.index')-> with('success' , "Product ({$product->name}) deleted"); 
     }
 
     public function trashed(){
@@ -227,7 +223,7 @@ class ProductsController extends Controller
     public function restore($id){
         $product = Product::onlyTrashed()->findOrFail($id);
         $product->restore();
-        return redirect()->route('products.index')-> with('success' , "Product {$product->name} restore"); 
+        return redirect()->route('products.index')-> with('success' , "Product ({$product->name}) restore"); 
     }
     
     public function forceDelete($id){
@@ -236,7 +232,7 @@ class ProductsController extends Controller
 
         if($product->image){ Storage::disk('public')->delete($product->image);}
 
-        return redirect()->route('products.index')-> with('success' , "Product {$product->name} deleted forever!"); 
+        return redirect()->route('products.index')-> with('success' , "Product ({$product->name}) deleted forever!"); 
     }
 
 

@@ -2,11 +2,17 @@
 @section('content')
         <h2 class="mb-4 fs-3">{{$title}}</h2>
         <a href="{{ route('categories.create')}}" class="btn btn-sm btn-primary">+ Create Categories</a>
-        <table class="table">
+        @if(session()->has('success'))
+        <div class="alert alert-success mt-2">
+          {{session('success')}}
+        </div>
+        @endif
+        <table class="table mt-3">
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
+                    <th>Products #</th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -16,6 +22,7 @@
                     <tr>
                         <td>{{$category->id}}</td>
                         <td>{{$category->name}}</td>
+                        <td>{{$category->products_count}}</td>
 
                         <td>
                 <!-- [$product->id] , ['product'=>$product->id ,'action' => 'edit'] -->
