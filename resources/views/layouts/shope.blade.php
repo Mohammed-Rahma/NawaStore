@@ -89,9 +89,12 @@
                             @auth
                             <div class="user">
                                 <i class="lni lni-user"></i>
-                                {{Auth::user()->name}}
+                                {{Auth::user()->profile->first_name}}
                             </div>
                             <ul class="user-login">
+                                <li>
+                                    <a href="{{route('profile.edit')}}" >Profile</a>
+                                </li>
                                 <li>
                                     <a href="{{route('logout')}}" onclick="event.preventDefault(); document.getElementById('logoutForm').submit()">Logout</a>
                                 </li>
@@ -109,13 +112,14 @@
                             <li><a href="{{route('login')}}">Sign In</a></li>
                             <li><a href="{{route('register')}}">Register</a></li>
                         </ul>
-                        @endauth    
+                        @endauth
+
                     </div>
                 </div>
             </div>
         </div>
         <!-- End Topbar -->
-        
+
         <!-- Start Header Middle -->
         <div class="header-middle">
             <div class="container">

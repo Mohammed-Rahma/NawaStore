@@ -14,6 +14,27 @@
 </div>
 @endif
 
+<form action="{{URL::current()}}" method="get" class="form-inline">
+    <input type="text" name="search" value="{{request('search')}}" class="from-control mr-2 mb-2" placeholder="Search...">
+
+    <select name="category_id" class="from-control mr-2 mb-2">
+        <option>All categories</option>
+        @foreach($categories as $category)
+        <option value="{{$category->id}}" @selected(request('category_id') == category->id )> {{$category->name}}</option>
+        @endforeach
+    </select>
+
+    <select name="status" class="from-control mr-2 mb-2">
+        <option>Status</option>
+        @foreach($status_options as $value => $text)
+        <option value="{{$value}}" @selected(request('status') == $value)>{{$text}}</option>
+    </select>
+    <input type="number" name="price_min" value="{{request('price_min')}}" class="from-control mr-2 mb-2" placeholder="Min Price">
+    <input type="number" name="price_max" value="{{request('price_max')}}" class="from-control mr-2 mb-2" placeholder="Max Price">
+
+    <button type="submit" class="btn btn-dark">Filter</button>
+</form>
+
 <table class="table">
     <thead>
         <tr>
@@ -29,7 +50,7 @@
         </tr>
     </thead>
     <tbody>
-        <?php foreach ($products as $product) : ?>
+         @foreach($products as $product)
             <tr>
                 <td>{{$product->id}}</td>
                 <td>{{$product->name}}</td>
@@ -70,7 +91,7 @@
                 -->
 
             </tr>
-        <?php endforeach ?>
+        @endforeach
     </tbody>
 </table>
 {{$products->links()}}

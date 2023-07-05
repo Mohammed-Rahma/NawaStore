@@ -19,7 +19,7 @@ class TrendingProducts extends Component
         $this->title = $title;
         $this->products = Product::withoutGlobalScope('owner')
             ->with('category')
-            ->status('archived')
+            ->status('active')
             ->latest('updated_at')
             ->take($count) // = limit(8)
             ->get();

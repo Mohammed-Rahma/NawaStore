@@ -11,13 +11,26 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\View;
 
 class ProductsController extends Controller
 {
+   
+    public function __construct(Request $request)
+    {
+        if($request->method() == 'GET'){
+            $categories = Category::all();
+            View::share([
+                'categories'=>$categories,
+                'status_options'=>Product::statusOptions(),
+            ]);
+        }
+
+    }
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
        
         //using query builder 
@@ -33,7 +46,9 @@ class ProductsController extends Controller
         ->select([
             'products.*',
             'categories.name as category_name'
-        ])->Paginate(5); // return collection of product model
+        ])
+        ->filter($request->query())
+        ->Paginate(5); // return collection of product model
         //  ->Active();
         // ->Status('archived')
         return view('admin.products.index',[
@@ -53,11 +68,8 @@ class ProductsController extends Controller
      */
     public function create()
     {
-        $categories = Category::all();
         return view('admin.products.create' , [
             'product'=> new Product(),
-            'categories'=>$categories,
-            'status_options'=>Product::statusOptions(),
         ]);
     }
 
@@ -91,7 +103,9 @@ class ProductsController extends Controller
         // $product->save();
         //prg: post redirect get 
 
-        //mass assignment
+
+
+        //mass assignment هنا عملية ال 
         $data=$request->validated();
         if($request->hasFile('image')){
            $file = $request->file('image');
@@ -131,12 +145,9 @@ class ProductsController extends Controller
 
         // 3) if(!$product){abort(404);}   =  $product = Product::findOrfail($id); 
 
-        $categories = Category::all();
         $gallery = ProductImage::where('product_id', '=' , $product->id)->get();
         return view('admin.products.edit' , [
             'product'=>$product,
-            'categories'=>$categories,
-            'status_options'=>Product::statusOptions(),
             'gallery'=>$gallery,
         ]);
     }

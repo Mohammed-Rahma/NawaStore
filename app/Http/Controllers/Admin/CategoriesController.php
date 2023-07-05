@@ -18,7 +18,7 @@ class CategoriesController extends Controller
         //     'categories.*',
         // ])-> get(); // return collection of product model
        
-        $categories = Category::withCount('products')->paginate();
+        $categories = Category::withCount('products')->paginate(5);
         return view('admin.categories.index' , [
             'title'=>'Categories List',
             'categories'=>$categories
