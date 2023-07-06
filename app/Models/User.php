@@ -51,4 +51,25 @@ class User extends Authenticatable implements MustVerifyEmail
             ]
         );
     }
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+
+    
+    public function cart()
+    {
+        return $this->belongsToMany(
+            Product::class,
+            'carts',
+            'user_id',
+            'product_id',
+            'id',
+            'id'
+
+        ) //اعطيته اسم الجدول الوسيط كارتس ليكسر العلاقة وبعطيه fk 
+            ->withPivot(['quantity'])
+            ->withTimestamps()
+            ->using(Cart::class);
+    }
 }

@@ -39,6 +39,21 @@ class Product extends Model
         ]);
     }
 
+    public function cart()
+    {
+        return $this->belongsToMany(
+            User::class,
+            'carts',
+            'product_id',
+            'user_id',
+            'id',
+            'id'
+             ) //اعطيته اسم الجدول الوسيط كارتس ليكسر العلاقة وبعطيه fk 
+            ->withPivot(['quantity'])
+            ->withTimestamps()
+            ->using(Cart::class);
+    }
+
 
     public static function booted()
     {
