@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CategoriesController;
+use App\Http\Controllers\Admin\OrdersController;
 use App\Http\Controllers\Admin\ProductsController;
 use App\Http\Controllers\Admin\UsersController;
 use Illuminate\Support\Facades\Route;
@@ -24,5 +25,6 @@ Route::middleware(['auth' , 'auth.type:admin,super-admin'])->prefix('/admin')->g
     Route::resource('/categories' , CategoriesController::class );
     Route::resource('/products' , ProductsController::class );
     Route::resource('/users' , UsersController::class );
+    Route::resource('/orders' , OrdersController::class );
 
 });

@@ -20,14 +20,15 @@
     <select name="category_id" class="from-control mr-2 mb-2">
         <option>All categories</option>
         @foreach($categories as $category)
-        <option value="{{$category->id}}" @selected(request('category_id') == category->id )> {{$category->name}}</option>
+        <option value="{{$category->id}}" @selected(request('category_id') == $category->id)> {{$category->name}}</option>
         @endforeach
     </select>
 
     <select name="status" class="from-control mr-2 mb-2">
         <option>Status</option>
         @foreach($status_options as $value => $text)
-        <option value="{{$value}}" @selected(request('status') == $value)>{{$text}}</option>
+        <option value="{{$value}}" @selected(request('status')==$value)>{{$text}}</option>
+        @endforeach
     </select>
     <input type="number" name="price_min" value="{{request('price_min')}}" class="from-control mr-2 mb-2" placeholder="Min Price">
     <input type="number" name="price_max" value="{{request('price_max')}}" class="from-control mr-2 mb-2" placeholder="Max Price">
@@ -50,34 +51,34 @@
         </tr>
     </thead>
     <tbody>
-         @foreach($products as $product)
-            <tr>
-                <td>{{$product->id}}</td>
-                <td>{{$product->name}}</td>
-                <td>{{$product->category_name}}</td>
-                <td>{{$product->price_formatted}}</td>
-                <td>{{$product->slug}}</td>
-                <td>{{$product->status}}</td>
-                <td>
-                    <!-- [$product->id] , ['product'=>$product->id ,'action' => 'edit'] -->
-                    <a href="{{route('products.edit' ,$product->id)}}" class="btn btn-sm btn-outline-dark">
-                        <i class="far fa-edit"></i>Edit</a>
-                </td>
-                <td>
-                    <form action="{{route('products.destroy' , $product->id )}}" method="post">
-                        @csrf
-                        @method('delete')
-                        <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i> Delete</button>
-                    </form>
-                </td>
+        @foreach($products as $product)
+        <tr>
+            <td>{{$product->id}}</td>
+            <td>{{$product->name}}</td>
+            <td>{{$product->category_name}}</td>
+            <td>{{$product->price_formatted}}</td>
+            <td>{{$product->slug}}</td>
+            <td>{{$product->status}}</td>
+            <td>
+                <!-- [$product->id] , ['product'=>$product->id ,'action' => 'edit'] -->
+                <a href="{{route('products.edit' ,$product->id)}}" class="btn btn-sm btn-outline-dark">
+                    <i class="far fa-edit"></i>Edit</a>
+            </td>
+            <td>
+                <form action="{{route('products.destroy' , $product->id )}}" method="post">
+                    @csrf
+                    @method('delete')
+                    <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i> Delete</button>
+                </form>
+            </td>
 
-                <td>
-                    <a href="{{$product->image_url}}" target="_blank">
-                        <img src="{{$product->image_url}}" width="60" alt="">
-                    </a>
-                </td>
+            <td>
+                <a href="{{$product->image_url}}" target="_blank">
+                    <img src="{{$product->image_url}}" width="60" alt="">
+                </a>
+            </td>
 
-                <!-- حقل الصورة القديم 
+            <!-- حقل الصورة القديم 
                 <td>
                     @if($product->image)
                     <a href="{{asset('storage/'. $product->image)}}" target="_blank">
@@ -90,7 +91,7 @@
                 </td> 
                 -->
 
-            </tr>
+        </tr>
         @endforeach
     </tbody>
 </table>
