@@ -13,7 +13,24 @@ class ProductImage extends Model
     protected $fillable = [
         'product_id', 'image'
     ];
-    public function getUrlAttribute(){
-        return Storage::disk('public')->url($this->image);
+
+
+    protected $appends = [
+        'url'
+    ];
+
+    protected $hidden = [
+        'image', "created_at",
+        "updated_at"
+
+    ];
+
+
+    public function getUrlAttribute()
+    {
+        if ($this->image) {
+            return Storage::disk('public')->url($this->image);
+        }
+        return "https://placehold.co/100x100";
     }
 }

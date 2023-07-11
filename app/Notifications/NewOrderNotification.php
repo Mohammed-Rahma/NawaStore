@@ -62,15 +62,15 @@ class NewOrderNotification extends Notification
         ]);
     }
 
-    // public function toBroadcast(object $notifiable): BroadcastMessage
-    // {
-    //     return new BroadcastMessage([
-    //         'body' => "new order #{ $this->order->id} created",
-    //         'icon' => 'fas fa-envelope',
-    //         'link' => route('products.show', $this->order->id),
-    //         'time' =>
-    //     ]);
-    // }
+    public function toBroadcast(object $notifiable): BroadcastMessage
+    {
+        return new BroadcastMessage([
+            'body' => "new order #{ $this->order->id} created",
+            'icon' => 'fas fa-envelope',
+            'link' => route('products.show', $this->order->id),
+            'time' => now()->diffForHumans(),
+        ]);
+    }
 
     /**
      * Get the array representation of the notification.

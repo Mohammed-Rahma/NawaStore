@@ -280,8 +280,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- AdminLTE App -->
     <script src="{{asset('dist/js/adminlte.min.js')}}"></script>
 
-    <script src="{{'public/build/assets/app-59c5144d.js'}}"></script>
-
+    <script>
+        const userId = "{{Auth::id()}}";
+    </script>
+    
+    @vite('resources/js/app.js')
 
 </body>
 

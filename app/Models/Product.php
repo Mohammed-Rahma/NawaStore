@@ -22,6 +22,16 @@ class Product extends Model
         'name', 'user_id', 'slug', 'category_id', 'description', 'short_description', 'price', 'compare_price', 'image', 'status'
     ];
 
+    protected $appends = [
+        'image_url', 
+        'price_formatted',
+        'ComparePriceFormatted'
+    ];
+
+    protected $hidden = [
+      'updated_at' , 'deleted_at' ,'image'
+    ];
+
     public static function statusOptions()
     {
         return [
@@ -37,6 +47,14 @@ class Product extends Model
         return $this->belongsTo(Category::class, 'category_id')->withDefault([
             'name' => 'Uncategories'
         ]);
+    }
+
+    public function gallery(){
+        return $this->hasMany(ProductImage::class);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function cart()
@@ -55,13 +73,16 @@ class Product extends Model
     }
 
 
-    public static function booted()
-    {
-        static::addGlobalScope('owner', function ($query) {
-            $query->where('user_id', '=', Auth::id());
-            //  Auth::user()->id OR 
-        });
-    }
+    // public static function booted()
+    // {
+    //     if(Auth::check()){
+    //         static::addGlobalScope('owner', function ($query) {
+    //             $query->where('user_id', '=', Auth::id());
+    //             //  Auth::user()->id OR 
+    //         });
+    //     }
+
+    // }
 
 
     public function getImageUrlAttribute()
@@ -98,15 +119,15 @@ class Product extends Model
         $query->where('status', '=', $status);
     }
 
+
+
     //Builder $query المنتجات الموجودة في المودل الي بدي اعمل عليها سيرتش 
     //array $filters الريكوستات الي جاي من السيرتش و السعر والستاتس
     //$request->search , function() بستخدم هذه العملية في حال كان واحد ريكوست الي جايني 
     public function scopeFilter(Builder $query, array $filters)
-    {
-         
+    {  
         // $filters['search'] اسم الحقل هوا key  لل التابع  array 
-        $query
-            ->when($filters['search'] ?? false, function ($query, $value) {
+        $query->when($filters['search'] ?? false, function ($query, $value) {
                 $query->Where(function ($query) use ($value) {
                     $query->where('products.name', 'LIKE', "%{$value}%")
                         ->orWhere('products.description', 'LIKE', "%{$value}%");

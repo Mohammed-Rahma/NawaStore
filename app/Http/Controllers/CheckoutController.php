@@ -53,6 +53,7 @@ class CheckoutController extends Controller
         DB::beginTransaction();
 
         try {
+            
             $oreder = Order::create($validated);
 
             foreach ($cart as $item) {
@@ -82,7 +83,7 @@ class CheckoutController extends Controller
     //send notification to admin !
     $user = User::where('type' , '=' , 'super-admin')->first(); // هاد اليوزر تاع الادمن الي بدي ابعت له الاشعار     
 
-    $user->notify(new NewOrderNotification($oreder));  // تاخد النوتيفيكشن الي انا بدي ابعتها او اليوزر يبعتهاو هان بعتت اوبجكت من كلاس النوتيفيكشن
+    $user->notify( new NewOrderNotification($oreder) );  // تاخد النوتيفيكشن الي انا بدي ابعتها او اليوزر يبعتهاو هان بعتت اوبجكت من كلاس النوتيفيكشن
         return redirect()->route('checkout.success');
     }
 
