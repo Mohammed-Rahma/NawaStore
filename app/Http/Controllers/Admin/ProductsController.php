@@ -228,7 +228,7 @@ class ProductsController extends Controller
         return view('admin.products.trashed' , [
             'title'=> 'Trashed Products',
             'products' => $products
-        ]);
+        ]); 
     }
 
     public function restore($id){

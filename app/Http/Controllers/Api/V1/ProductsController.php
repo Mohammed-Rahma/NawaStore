@@ -94,7 +94,7 @@ class ProductsController extends Controller
 
             'name' => ['sometimes', 'required'],
             'category_id' => ['sometimes', 'required'],
-            'price' => ['sometimes', 'required', 'numric', 'min:0']
+            'price' => ['sometimes', 'required', 'numeric', 'min:0']
         ]);
         if ($request->hasFile('image')) {
             $file = $request->file('image'); //return uploaded file object

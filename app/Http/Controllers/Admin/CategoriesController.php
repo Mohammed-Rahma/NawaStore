@@ -43,7 +43,7 @@ class CategoriesController extends Controller
         $category->name = $request->input('name'); //اسم العمود في الداتا بيز نفسسس اسم الحقل تاع الفورم 
         $category->save(); //خزن في الداتا بيز 
         //prg: post redirect get 
-        return redirect()->route('categories.index')->with('success' , "Category ({$category->name}) created");  
+        return redirect()->route('categories.index')->with('success' , "Category ({$category->name}) created"); //هيك بكون خزنت الرسالة في السشن 
         // redirect(route('categories.index'));
     }
 
@@ -83,9 +83,9 @@ class CategoriesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Category $category)
     {
-        Category::destroy($id);
-        return redirect()->route('categories.index');
+       Category::destroy($category->id);
+        return redirect()->route('categories.index')->with('success' , "Category ({$category->name}) deleted");
     }
 }
